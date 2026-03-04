@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard - Ocean View Resort</title>
+  <link rel="stylesheet" href="dashboard.css"/>
+</head>
+<body>
+
+<div id="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div>
+        <h2>Ocean View</h2>
+        <p>Resort Management</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <div class="nav-item active" id="nav-dashboard"      onclick="showPage('dashboard')">      <span>🏠</span> Dashboard</div>
+      <div class="nav-item"        id="nav-addReservation" onclick="showPage('addReservation')"> <span>➕</span> Add Reservation</div>
+      <div class="nav-item"        id="nav-allReservations"onclick="showPage('allReservations')"><span>📋</span> All Reservations</div>
+      <div class="nav-item"        id="nav-details"        onclick="showPage('details')">        <span>🔍</span> Display Details</div>
+      <div class="nav-item"        id="nav-billing"        onclick="showPage('billing')">        <span>💳</span> Calculate Bill</div>
+      <div class="nav-item admin-only" id="nav-addStaff"   onclick="showPage('addStaff')">      <span>👤</span> Add Staff</div>
+      <div class="nav-item"        id="nav-help"           onclick="showPage('help')">           <span>❓</span> Help</div>
+    </nav>
+    <div class="sidebar-user">
+      <div>
+        <p id="sidebarName">-</p>
+        <p id="sidebarRole">-</p>
+      </div>
+      <button class="btn-logout" id="logoutBtn" title="Logout">⏻</button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- DASHBOARD -->
+    <div class="page active" id="page-dashboard">
+      <div class="page-header"><h2>Dashboard</h2><p>Welcome back, <span id="welcomeName">-</span></p></div>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-icon"></div><div class="stat-num" id="statTotal">-</div><div class="stat-lbl">Total Reservations</div></div>
+        <div class="stat-card"><div class="stat-icon"></div><div class="stat-num" id="statConfirmed">-</div><div class="stat-lbl">Confirmed</div></div>
+        <div class="stat-card"><div class="stat-icon"></div><div class="stat-num" id="statCancelled">-</div><div class="stat-lbl">Cancelled</div></div>
+        <div class="stat-card"><div class="stat-icon"></div><div class="stat-num" id="statRevenue">-</div><div class="stat-lbl">Revenue (LKR)</div></div>
+      </div>
+      <div class="card">
+        <h3>Recent Reservations</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Res. No.</th><th>Guest</th><th>Room No.</th><th>Room Type</th><th>Check-In</th><th>Check-Out</th><th>Status</th></tr></thead>
+            <tbody id="dashBody"><tr><td colspan="7" class="empty">Loading...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ADD RESERVATION -->
+    <div class="page" id="page-addReservation">
+      <div class="page-header"><h2>Add Reservation</h2><p>Create a new booking</p></div>
+      <div class="card" style="max-width:640px;">
+        <div id="addAlert" class="alert" style="display:none;"></div>
+        <form id="addForm">
+          <div class="form-row">
+            <div class="form-group"><label>Guest Full Name *</label><input type="text" id="guestName" placeholder="e.g. Kamal Perera"/></div>
+            <div class="form-group"><label>Contact Number * (10 digits)</label><input type="text" id="contactNumber" placeholder="0771234567" maxlength="10"/></div>
+          </div>
+          <div class="form-group"><label>Address *</label><textarea id="address" placeholder="Street, City"></textarea></div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Room Type *</label>
+              <select id="roomType" onchange="onAdminRoomTypeChange()">
+                <option value="">- Select -</option>
+                <option value="Standard">Standard - LKR 3,000/night</option>
+                <option value="Deluxe">Deluxe - LKR 8,000/night</option>
+                <option value="Suite">Suite - LKR 13,000/night</option>
+                <option value="Ocean View">Ocean View - LKR 20,000/night</option>
+              </select>
+            </div>
+            <div class="form-group" id="roomNumGroup" style="display:none;">
+              <label>Room Number *</label>
+              <select id="roomNumber"><option value="">- Select room -</option></select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Check-In Date *</label><input type="date" id="checkInDate"/></div>
+            <div class="form-group"><label>Check-Out Date *</label><input type="date" id="checkOutDate"/></div>
+          </div>
+          <div class="form-group" id="addTotalGroup" style="display:none;">
+            <label>Estimated Total</label>
+            <input type="text" id="addTotal" readonly/>
+          </div>
+          <div class="btn-row">
+            <button type="submit" class="btn btn-black">Confirm Reservation</button>
+            <button type="button" class="btn btn-outline" id="clearBtn">Clear</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ALL RESERVATIONS -->
+    <div class="page" id="page-allReservations">
+      <div class="page-header"><h2>All Reservations</h2><p>View and manage all bookings</p></div>
+      <div class="card">
+        <div class="toolbar">
+          <input type="text" id="searchName" class="search-input" placeholder="🔍  Search by guest name..."/>
+          <button class="btn btn-outline" id="refreshBtn">↻ Refresh</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Res. No.</th><th>Guest</th><th>Contact</th><th>Room No.</th><th>Room Type</th><th>Check-In</th><th>Check-Out</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="allBody"><tr><td colspan="9" class="empty">Click Refresh to load</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- DETAILS -->
+    <div class="page" id="page-details">
+      <div class="page-header"><h2>Display Details</h2><p>Look up a specific reservation</p></div>
+      <div class="card" style="max-width:520px;">
+        <div class="form-row" style="align-items:flex-end;">
+          <div class="form-group" style="margin:0;flex:1;"><label>Reservation Number</label><input type="text" id="lookupId" placeholder="e.g. RES-0001"/></div>
+          <button class="btn btn-black" id="lookupBtn" style="height:42px;">Search</button>
+        </div>
+      </div>
+      <div class="card" id="detailsCard" style="display:none;margin-top:20px;max-width:520px;">
+        <h3>Booking Details</h3>
+        <div id="detailsContent"></div>
+      </div>
+    </div>
+
+    <!-- BILLING -->
+    <div class="page" id="page-billing">
+      <div class="page-header"><h2>Calculate Bill</h2><p>Generate invoice for a reservation</p></div>
+      <div class="card" style="max-width:520px;">
+        <div class="form-row" style="align-items:flex-end;">
+          <div class="form-group" style="margin:0;flex:1;"><label>Reservation Number</label><input type="text" id="billId" placeholder="e.g. RES-0001"/></div>
+          <button class="btn btn-black" id="billBtn" style="height:42px;">Generate</button>
+        </div>
+      </div>
+      <div id="billSection" style="display:none;margin-top:20px;">
+        <div class="card" style="max-width:520px;">
+          <div class="bill-header">
+            <div><h3>Invoice</h3></div>
+            <button class="btn btn-outline" onclick="window.print()">🖨 Print</button>
+          </div>
+          <div id="billContent"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ADD STAFF (admin only) -->
+    <div class="page" id="page-addStaff">
+      <div class="page-header"><h2>Add Staff</h2><p>Create a new staff account</p></div>
+      <div class="card" style="max-width:520px;">
+        <div id="staffAlert" class="alert" style="display:none;"></div>
+        <div class="form-row">
+          <div class="form-group"><label>Full Name *</label><input type="text" id="staffName" placeholder="e.g. Nimal Silva"/></div>
+          <div class="form-group"><label>Username *</label><input type="text" id="staffUsername" placeholder="Choose username" autocomplete="off"/></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Password *</label><input type="password" id="staffPassword" placeholder="Set password"/></div>
+          <div class="form-group"><label>Confirm Password *</label><input type="password" id="staffConfirm" placeholder="Repeat password"/></div>
+        </div>
+        <button class="btn btn-black" id="addStaffBtn">Create Staff Account</button>
+      </div>
+      <div class="card" style="margin-top:20px;">
+        <h3>All Staff</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Full Name</th><th>Username</th><th>Role</th><th>Action</th></tr></thead>
+            <tbody id="staffBody"><tr><td colspan="4" class="empty">Loading...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- HELP -->
+    <div class="page" id="page-help">
+      <div class="page-header"><h2>Help</h2><p>System guide</p></div>
+      <div class="card" style="max-width:640px;">
+        <div class="help-item"><div class="help-q" onclick="toggleHelp(this)"><span>➕ Add Reservation</span><span class="chevron">▼</span></div><div class="help-a">Go to Add Reservation, fill in guest details, select room type and available room number, choose dates and confirm.</div></div>
+        <div class="help-item"><div class="help-q" onclick="toggleHelp(this)"><span>💳 Calculate Bill</span><span class="chevron">▼</span></div><div class="help-a">Go to Calculate Bill, enter the reservation number and click Generate.</div></div>
+        <div class="help-item"><div class="help-q" onclick="toggleHelp(this)"><span>👤 Add Staff</span><span class="chevron">▼</span></div><div class="help-a">Only admins can add staff. Go to Add Staff, fill in the name, username and password.</div></div>
+        <div class="help-item"><div class="help-q" onclick="toggleHelp(this)"><span>🏨 Room Rates</span><span class="chevron">▼</span></div><div class="help-a">Standard: LKR 3,000 · Deluxe: LKR 8,000 · Suite: LKR 13,000 · Ocean View: LKR 20,000.</div></div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="dashboard.js"></script>
+</body>
+</html>
