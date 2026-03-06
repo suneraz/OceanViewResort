@@ -19,6 +19,7 @@ A web-based resort management system built with Java, JSP, and Apache Tomcat.
 - NetBeans IDE
 
 ## Project Structure
+```
 OceanViewResort/
 ├── src/
 │   └── main/
@@ -46,6 +47,7 @@ OceanViewResort/
 │           └── dashboard.js
 ├── oceanview_reservations.csv
 └── pom.xml
+```
 
 ## How to Run
 1. Clone the repository
