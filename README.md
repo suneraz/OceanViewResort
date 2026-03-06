@@ -1,3 +1,1 @@
-# OceanViewResort 
- 
-## OceanView Resort Management System 
+# OceanView Resort Management System 
