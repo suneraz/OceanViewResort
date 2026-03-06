@@ -1,0 +1,9 @@
+ReservationNumber,GuestName,Address,ContactNumber,RoomNumber,RoomType,CheckInDate,CheckOutDate,Status
+RES-0001,Kasun Perera,"142/3 Temple Road, Panadura",774839205,101,Standard,3/6/2026,3/8/2026,Confirmed
+RES-0002,Dinithi Fernando,"55 Lake View Avenue, Negombo",716592843,102,Standard,3/7/2026,3/10/2026,Confirmed
+RES-0003,Chamara Silva,"88/2 Galle Road, Kalutara",753829416,103,Standard,3/11/2026,3/13/2026,Confirmed
+RES-0004,Tharushi Jayasinghe,"23 School Lane, Maharagama",764917358,201,Deluxe,3/7/2026,3/12/2026,Confirmed
+RES-0005,Nadeesha Gunawardena,"17/5 Station Road, Moratuwa",782649137,202,Deluxe,3/10/2026,3/11/2026,Confirmed
+RES-0006,Piumi Wijesinghe,"64 Flower Garden, Kandy",705938172,301,Suite,3/14/2026,3/17/2026,Confirmed
+RES-0007,Ravindu Bandara,"91 New Town Road, Kurunegala",728461935,302,Suite,3/14/2026,3/27/2026,Confirmed
+RES-0008,Ishara Karunaratne,"12/7 Temple Street, Gampaha",743956182,402,Ocean View,3/14/2026,3/17/2026,Confirmed

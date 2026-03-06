@@ -7,7 +7,7 @@ import java.util.List;
 
 public class FileStorage {
 
-    private static final String FILE_PATH = System.getProperty("user.home") + "/oceanview_reservations.csv";
+    private static final String FILE_PATH = System.getProperty("user.dir") + "/oceanview_reservations.csv";
     private static final String HEADER    = "ReservationNumber,GuestName,Address,ContactNumber,RoomNumber,RoomType,CheckInDate,CheckOutDate,Status";
 
     public static void saveReservation(Reservation r) {
